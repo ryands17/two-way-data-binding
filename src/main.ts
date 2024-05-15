@@ -7,12 +7,11 @@ declare global {
     state: TState;
   }
 }
-type ObjKey = string | symbol;
-type TState = Record<ObjKey, any>;
+type TState = Record<PropertyKey, any>;
 
 function initialise(stage: TState) {
   return new Proxy(stage, {
-    set(target: Record<ObjKey, any>, key, value) {
+    set(target: Record<PropertyKey, any>, key, value) {
       target[key] = value;
       render(key);
 
@@ -41,7 +40,7 @@ function addListeners() {
   });
 }
 
-function render(key: ObjKey) {
+function render(key: PropertyKey) {
   const bindings = document.querySelectorAll(`[data-bind=${String(key)}]`);
 
   for (let binding of bindings) {
